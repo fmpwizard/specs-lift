@@ -1,0 +1,27 @@
+<lift:surround with="default" at="content">
+
+      <div class="colborder ">
+        <hr class="space" />
+
+
+<lift:Overview.renderAgentResult>
+    <h2>Results for version: <tests:version /></h2> 
+    <table>
+      <tr>
+        <th>Agent Tests</th>
+        <th>Result</th>
+      </tr>
+      <tests:testResultListRow>
+        <tr>
+          <td test:classname="success"> <test:name /> </td>
+          <td test:classname="success"> <test:result /> </td>
+        </tr>
+      </tests:testResultListRow>
+    </table>
+</lift:Overview.renderAgentResult>
+      </div>
+
+
+
+</lift:surround>
+
