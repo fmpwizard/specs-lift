@@ -10,9 +10,10 @@ import org.specs.mock.Mockito
 import org.specs._
 import org.specs.specification._
 
+import  _root_.net.liftweb.common.Logger
 
 
-trait MockRequest extends Mockito { this: Specification =>
+trait MockRequest extends Mockito  { this: Specification =>
   var request = mock[Req]
 //  var httpRequest = mock[HttpServletRequest]
   var httpRequest = mock[provider.HTTPRequest]
@@ -45,12 +46,14 @@ trait MockRequest extends Mockito { this: Specification =>
 //  It also makes sure that the example expectations are executed in a mocked session
 // see http://code.google.com/p/specs/wiki/DeclareSpecifications#Specification_context_(_from_1.6.1_) for more information
 
-object DatabaseContext extends Specification with Contexts with MockRequest {
-  val setup = new SpecContext {
-    //beforeExample(inSession(Users.createQuery("deleteUser").executeUpdate)) //delete the User table before each example
-    aroundExpectations(inSession(_))  // execute each example inside a mocked session
+object DatabaseContext extends Specification with Contexts with
+MockRequest {
+ val setup = new SpecContext {
+   beforeExample(createMocks)
+   aroundExpectations(inSession(_))  // execute each example inside a mocked session
  }
 }
+
 
 // and finally the specification itself
 
@@ -61,13 +64,15 @@ class OverviewTest extends SpecificationWithJUnit with MockRequest with Contexts
 
   DatabaseContext.setup(this) // set the specification context on this specification
 
-  "Overview" can {
-    "return a list of Agent results" in {
-      setParameter("v", "2.2.0.1033")
+ "Overview" can {
+   "see the version" in {
+     setParameter("v", "2.2.0.1033")
+     Console.println(request.param("v"))
       val overview= new Overview
       val xhtml= overview.renderAgentResult(<lift:Overview.renderAgentResult>
     <h2>Results for version: <tests:version /></h2>
 </lift:Overview.renderAgentResult>).toString
+
       xhtml.indexOf("2.2.0.1033") must be_>=(0)
 
     }
