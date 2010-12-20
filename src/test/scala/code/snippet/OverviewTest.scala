@@ -3,7 +3,6 @@ package snippet {
 
 
 // First I create Mocks for the lift session
-//import javax.servlet.http._
 import net.liftweb.http.{ S, Req, LiftSession, provider }
 import org.specs.mock.Mockito
 
@@ -12,7 +11,6 @@ import org.specs._
 import org.specs.specification._
 
 
-//import _root_.code.snippet.Overview._
 
 trait MockRequest extends Mockito { this: Specification =>
   var request = mock[Req]
@@ -23,7 +21,6 @@ trait MockRequest extends Mockito { this: Specification =>
 
   def createMocks: Unit = {
     request = mock[Req]
-//    httpRequest = mock[HttpServletRequest]
     httpRequest = mock[provider.HTTPRequest]
     session = mock[LiftSession]
     request.request returns httpRequest
@@ -33,14 +30,12 @@ trait MockRequest extends Mockito { this: Specification =>
   def inSession(f: =>Any) {  S.init(request, session) { f }  }
 
   def unsetParameter(name: String) {
-    request.param(name)
-    return None
+    request.param(name) returns None
   
   }
 
   def setParameter(name: String, value: String)  {
-    request.param(name)
-    return Some(value)
+    request.param(name) returns Some(value)
   }
 }
 
@@ -64,7 +59,7 @@ import org.specs.specification._
 
 class OverviewTest extends SpecificationWithJUnit with MockRequest with Contexts {
 
-  //DatabaseContext.setup(this) // set the specification context on this specification
+  DatabaseContext.setup(this) // set the specification context on this specification
 
   "Overview" can {
     "return a list of Agent results" in {
