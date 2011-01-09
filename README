@@ -4,11 +4,10 @@ http://code.google.com/p/simple-build-tool/
 
 Run:
 
+git clone git://github.com/fmpwizard/specs-lift.git
 
-Edit this file with your mysql settings
-src/main/resources/props/default.props 
 
-Then cd into example and type:
+Then cd into specs-lift and type:
 sbt
 
 At the sbt prompt, type:
@@ -17,9 +16,20 @@ update
 #This may take a while the first time, it will download dependences.
 
 Then:
-jetty-run
 
-Point your browser to:
-http://localhost:8080/
+>test
 
+and you will see the test pass :)
+
+if you want to see the UI, do
+
+>jetty-run
+
+and go to:
+
+http://127.0.0.1:8080/main-tab?v=2.3.4.00
+
+Enjoy!
+
+  Diego
 
