@@ -1,26 +1,26 @@
-package code {
-package snippet {
+package code
+package snippet
 
-
-import _root_.scala.xml.{NodeSeq, Text}
-
-import _root_.net.liftweb._
+import scala.xml.{NodeSeq, Text}
+import net.liftweb._
 import util._
-import common.Logger
-import http.SHtml._
-import http.S._
-import http.js.JsCmds.{SetHtml, SetValueAndFocus}
-
+import common.{Box,Logger}
+import http._
+import SHtml._
+import S._
+import js.JsCmds.{SetHtml, SetValueAndFocus}
 import Helpers._
 
-class Overview extends Logger {
-
+class Overview extends Logger with SimpleInjector{
   /**
     * Generate the Test Result view section
     */
 
-  val showingVersion= http.S.param("v") openOr("ERROR") 
-  info(showingVersion)
+  //val showingVersion= http.S.param("v") openOr("ERROR") 
+  val showingVersion= new Inject[Box[String]]( (http.S.param("v")  ) ){}
+  showingVersion.default.set(Box("diego"))
+
+  info(showingVersion.vend)
   def renderAgentResult( xhtml: NodeSeq ) = {
 
     val testResultFiltered= List(("test name 1", "PASS"), ("test name 2", "PASS")   )  
@@ -37,13 +37,7 @@ class Overview extends Logger {
         "result" -> testResult
       )}
     }
-    bind("tests",xhtml, "version" -> showingVersion, "testResultListRow" -> bindTestResults _)
+    bind("tests",xhtml, "version" -> showingVersion.vend.openOr(""), "testResultListRow" -> bindTestResults _)
   }
-  
-
-
-
 }
 
-}
-}
