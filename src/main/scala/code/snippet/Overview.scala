@@ -16,7 +16,6 @@ class Overview extends Logger with SimpleInjector{
     * Generate the Test Result view section
     */
 
-  //val showingVersion= http.S.param("v") openOr("ERROR") 
   val showingVersion= new Inject[Box[String]]( (http.S.param("v")  ) ){}
   showingVersion.default.set(http.S.param("v"))
 
