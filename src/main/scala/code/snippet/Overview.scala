@@ -18,7 +18,7 @@ class Overview extends Logger with SimpleInjector{
 
   //val showingVersion= http.S.param("v") openOr("ERROR") 
   val showingVersion= new Inject[Box[String]]( (http.S.param("v")  ) ){}
-  showingVersion.default.set(Box("ERROR"))
+  showingVersion.default.set(http.S.param("v"))
 
   info(showingVersion.vend)
   def renderAgentResult( xhtml: NodeSeq ) = {
